@@ -1,7 +1,7 @@
 name: cron-setup
 
 # Setup manuale (una tantum + ogni modifica schedule) dei 2 job su cron-job.org.
-# Secret necessari in QUESTO repo: CRON_JOB_API (cron-job.org) e PAT_BIDLY (PAT con contents R/W su bidly, per il dispatch).
+# Secret necessari in QUESTO repo: CRON_JOB_API (cron-job.org) e GH_TOKEN (PAT con contents R/W su bidly, per il dispatch).
 # Esegui da Actions -> cron-setup -> Run workflow.
 
 on:
@@ -15,7 +15,7 @@ jobs:
       - name: Crea/aggiorna job cron-job.org
         env:
           CRON_JOB_API: ${{ secrets.CRON_JOB_API }}
-          PAT_BIDLY: ${{ secrets.PAT_BIDLY }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           node -e "
           (async () => {
@@ -28,7 +28,7 @@ jobs:
             };
             const dispatchHeaders = {
               Accept: 'application/vnd.github+json',
-              Authorization: 'Bearer ' + process.env.PAT_BIDLY,
+              Authorization: 'Bearer ' + process.env.GH_TOKEN,
               'Content-Type': 'application/json',
             };
             const jobs = [
