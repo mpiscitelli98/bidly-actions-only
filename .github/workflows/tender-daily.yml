@@ -1,0 +1,31 @@
+name: tender-daily
+
+# Worker bidly-actions-only: gira il watcher sul checkout PRIVATO di bidly e pusha i dati.
+# Trigger: repository_dispatch (da cron-job.org) o manuale.
+
+on:
+  repository_dispatch:
+    types: [tender-daily]
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: mpiscitelli98/bidly
+          token: ${{ secrets.PAT_BIDLY }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run watcher (fresco giornaliero: TED + PVL 7gg + MePA + avvisi)
+        run: node scripts/tender-watcher.js --pvl-window=7
+      - name: Commit dati aggiornati su bidly
+        run: |
+          git config user.name "tender-bot"
+          git config user.email "tender-bot@local"
+          git add gare-privata/tenders.json gare-privata/.tender-seen.json
+          git diff --cached --quiet || git commit -m "chore: aggiornamento giornaliero bandi [skip ci]"
+          git push

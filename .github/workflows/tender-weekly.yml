@@ -1,0 +1,30 @@
+name: tender-weekly
+
+# Worker bidly-actions-only: giro completo settimanale (PVL 90gg + ANAC bulk).
+
+on:
+  repository_dispatch:
+    types: [tender-weekly]
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: mpiscitelli98/bidly
+          token: ${{ secrets.PAT_BIDLY }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run watcher (completo: PVL 90gg + ANAC bulk + tutto)
+        run: node scripts/tender-watcher.js --pvl-window=90
+      - name: Commit dati aggiornati su bidly
+        run: |
+          git config user.name "tender-bot"
+          git config user.email "tender-bot@local"
+          git add gare-privata/tenders.json gare-privata/.tender-seen.json
+          git diff --cached --quiet || git commit -m "chore: aggiornamento settimanale bandi [skip ci]"
+          git push
