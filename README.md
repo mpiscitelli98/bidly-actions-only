@@ -10,7 +10,7 @@ Worker pubblico per Bidly (stesso pattern di `cemform-actions-only`).
 
 | Secret | Cosa |
 |---|---|
-| `PAT_BIDLY` | PAT con Contents read+write sul repo `bidly` (checkout + push + dispatch) |
+| `GH_TOKEN` | PAT con Contents+Actions read+write su `bidly` e `bidly-actions-only` (checkout + push + dispatch) |
 | `CRON_JOB_API` | API key cron-job.org (solo per `cron-setup`) |
 
 ## Attivazione cron
