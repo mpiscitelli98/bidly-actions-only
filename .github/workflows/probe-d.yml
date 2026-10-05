@@ -1,0 +1,12 @@
+name: probe-d
+
+# Commento con unicode: àèéìòù … → ✓
+
+on:
+  workflow_dispatch:
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo D-OK
