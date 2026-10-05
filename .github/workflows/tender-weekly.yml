@@ -30,4 +30,3 @@ jobs:
           git diff --cached --quiet || git commit -m "chore: aggiornamento settimanale bandi [skip ci]"
           git push || (git pull --rebase && git push)
 
-# reindex: 2026-10-05
