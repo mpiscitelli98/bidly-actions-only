@@ -25,6 +25,7 @@ jobs:
         run: |
           git config user.name "tender-bot"
           git config user.email "tender-bot@local"
+          git pull --rebase || true
           git add gare-privata/tenders.json gare-privata/.tender-seen.json
           git diff --cached --quiet || git commit -m "chore: aggiornamento settimanale bandi [skip ci]"
-          git push
+          git push || (git pull --rebase && git push)
