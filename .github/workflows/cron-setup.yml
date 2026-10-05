@@ -44,11 +44,15 @@ jobs:
               },
             ];
             const existing = await api('GET', '/jobs');
+            let first = true;
             for (const j of jobs) {
               for (const e of (existing.jobs || []).filter((x) => x.title === j.title)) {
                 await api('DELETE', '/jobs/' + e.jobId);
                 console.log('eliminato job esistente:', e.jobId);
               }
+              // Rate limit creazione job: max 5/min — pausa tra un PUT e l'altro.
+              if (!first) await new Promise((r) => setTimeout(r, 65000));
+              first = false;
               const body = JSON.stringify({ event_type: j.event });
               const created = await api('PUT', '/jobs', {
                 job: {
