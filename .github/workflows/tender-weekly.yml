@@ -7,6 +7,10 @@ on:
     types: [tender-weekly]
   workflow_dispatch:
 
+concurrency:
+  group: tender-watch
+  cancel-in-progress: false
+
 jobs:
   watch:
     runs-on: ubuntu-latest
