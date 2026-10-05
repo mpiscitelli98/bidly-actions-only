@@ -24,14 +24,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - name: Install dipendenze
+        run: npm ci --no-audit --no-fund
       - name: "Run watcher (fresco giornaliero: TED + PVL 7gg + MePA + avvisi, senza ANAC bulk)"
         run: node scripts/tender-watcher.js --pvl-window=7 --skip=anac
+      - name: Digest notifiche
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: node scripts/notify.js || true
       - name: Commit dati aggiornati su bidly
         run: |
           git config user.name "tender-bot"
           git config user.email "tender-bot@local"
           git pull --rebase || true
-          git add gare-privata/tenders.json gare-privata/.tender-seen.json
+          git add gare-privata/tenders.json gare-privata/.tender-seen.json gare-privata/notifiche.json gare-privata/esiti.json
           git diff --cached --quiet || git commit -m "chore: aggiornamento giornaliero bandi [skip ci]"
           git push || (git pull --rebase && git push)
 
