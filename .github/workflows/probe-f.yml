@@ -1,7 +1,5 @@
 name: probe-f
 
-# Worker bidly-actions-only: gira il watcher sul checkout PRIVATO di bidly e pusha i dati.
-# Trigger: repository_dispatch (da cron-job.org) o manuale.
 
 on:
   workflow_dispatch:
