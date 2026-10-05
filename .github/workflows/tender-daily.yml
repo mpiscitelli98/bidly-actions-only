@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Run watcher (fresco giornaliero: TED + PVL 7gg + MePA + avvisi, senza ANAC bulk)
+      - name: "Run watcher (fresco giornaliero: TED + PVL 7gg + MePA + avvisi, senza ANAC bulk)"
         run: node scripts/tender-watcher.js --pvl-window=7 --skip=anac
       - name: Commit dati aggiornati su bidly
         run: |

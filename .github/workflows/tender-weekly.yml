@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Run watcher (completo: PVL 90gg + ANAC bulk + tutto)
+      - name: "Run watcher (completo: PVL 90gg + ANAC bulk + tutto)"
         run: node scripts/tender-watcher.js --pvl-window=90
       - name: Commit dati aggiornati su bidly
         run: |
